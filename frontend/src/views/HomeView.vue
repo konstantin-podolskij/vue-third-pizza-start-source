@@ -9,29 +9,24 @@
             <h2 class="title title--small sheet__title">Выберите тесто</h2>
 
             <div class="sheet__content dough">
-              <label class="dough__input dough__input--light">
+              <label
+                v-for="dough in doughs"
+                :key="dough.id"
+                :class="`dough__input dough__input--${dough.value}`"
+              >
                 <input
                   type="radio"
                   name="dought"
-                  value="light"
+                  :value="dough.value"
                   class="visually-hidden"
                   checked
                 />
-                <img src="@/assets/img/dough-light.svg" alt="Тонкое тесто" />
-                <b>Тонкое</b>
-                <span>Из твердых сортов пшеницы</span>
-              </label>
-
-              <label class="dough__input dough__input--large">
-                <input
-                  type="radio"
-                  name="dought"
-                  value="large"
-                  class="visually-hidden"
+                <img
+                  :src="getImage(dough.image)"
+                  :alt="`${dough.name} тесто`"
                 />
-                <img src="@/assets/img/dough-large.svg" alt="Толстое тесто" />
-                <b>Толстое</b>
-                <span>Из твердых сортов пшеницы</span>
+                <b>{{ dough.name }}</b>
+                <span>{{ dough.description }}</span>
               </label>
             </div>
           </div>
@@ -508,6 +503,17 @@
     </form>
   </main>
 </template>
+
+<script setup>
+import { normalizeDough } from "@/common/helpers/normalize";
+import doughJSON from "@/mocks/dough.json";
+
+const doughs = doughJSON.map(normalizeDough);
+
+const getImage = (image) => {
+  return new URL(`../assets/img/${image}`, import.meta.url).href;
+};
+</script>
 
 <style lang="scss">
 @import "@/assets/scss/ds-system/ds.scss";
