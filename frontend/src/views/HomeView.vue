@@ -79,13 +79,18 @@
               <div class="ingredients__sauce">
                 <p>Основной соус:</p>
 
-                <label class="radio ingredients__input">
-                  <input type="radio" name="sauce" value="tomato" checked />
-                  <span>Томатный</span>
-                </label>
-                <label class="radio ingredients__input">
-                  <input type="radio" name="sauce" value="creamy" />
-                  <span>Сливочный</span>
+                <label
+                  v-for="sauce in sauces"
+                  :key="sauce.id"
+                  class="radio ingredients__input"
+                >
+                  <input
+                    type="radio"
+                    name="sauce"
+                    :value="`${sauce.value}`"
+                    checked
+                  />
+                  <span>{{ sauce.name }}</span>
                 </label>
               </div>
 
@@ -505,10 +510,12 @@
 </template>
 
 <script setup>
-import { normalizeDough } from "@/common/helpers/normalize";
+import { normalizeDough, normalizeSauces } from "@/common/helpers/normalize";
 import doughJSON from "@/mocks/dough.json";
+import saucesJSON from "@/mocks/sauces.json";
 
 const doughs = doughJSON.map(normalizeDough);
+const sauces = saucesJSON.map(normalizeSauces);
 
 const getImage = (image) => {
   return new URL(`../assets/img/${image}`, import.meta.url).href;
